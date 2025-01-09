@@ -1,0 +1,358 @@
+<div id="pdf-content">
+  <!-- Tabla con imagen en la primera columna de la primera fila y 1 columna en las siguientes filas -->
+  <div style="margin-top: 2px">
+    <table
+      border="1"
+      cellpadding="10"
+      style="width: 100%; border-collapse: collapse; border: 2px solid #000"
+    >
+      <!-- Primera fila con 3 columnas, la primera tiene una imagen -->
+      <tr>
+        <td style="border: 1px solid #000; max-width: 150px; text-align: left">
+          <img
+            src="./assets/media/stock/900x600/logo.png"
+            alt="Imagen"
+            style="
+              width: 30%; /* Ajusta el ancho de la imagen */
+              height: 50px;
+              display: inline-block; /* Hace que la imagen no ocupe todo el ancho */
+            "
+          />
+        </td>
+
+        <td style="border: 1px solid #000; width: 500px; text-align: center">
+          <strong>Autorización de Débito Automático</strong><br />
+          <strong>REG ATC 01 002</strong>
+        </td>
+        <td style="border: 1px solid #000; width: 100px; text-align: center">
+          <strong>Vrf: 3</strong><br />
+          <strong>Fecha: Jun 2023</strong>
+        </td>
+      </tr>
+      <!-- Segunda fila con 1 columna -->
+      <tr>
+        <td style="border: 1px solid #000" colspan="3">
+          <!-- Información debajo de los cuadros -->
+          <div style="margin-top: 20px">
+            <!-- Fecha actual y Quito, DM: en la misma línea -->
+            <p style="margin: 0; padding: 0; display: inline">
+              <strong>Quito, DM:</strong>
+            </p>
+            <p
+              style="
+                margin: 0;
+                padding: 0;
+                display: inline;
+                margin-right: 300px;
+              "
+            >
+              {{ currentDate }}
+            </p>
+
+            <!-- Código de contrato en la misma línea -->
+            <p style="margin: 0; padding: 0; display: inline">
+              <strong>Código Contrato:</strong>
+            </p>
+            <p style="margin: 0; padding: 0; display: none; margin-right: 30px">
+              {{ cliente?.con_numero_contrato }}
+            </p>
+
+            <!-- Cuadros dinámicos para el número de contrato -->
+            <span
+              *ngIf="cliente?.con_numero_contrato"
+              style="display: inline-flex; gap: 2px; align-items: center"
+            >
+              <ng-container
+                *ngFor="let digit of cliente.con_numero_contrato.split('')"
+              >
+                <span
+                  style="
+                    border: 1px solid #000;
+                    width: 20px;
+                    height: 20px;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 14px;
+                  "
+                >
+                  {{ digit }}
+                </span>
+              </ng-container>
+            </span>
+            <br /><br />
+
+            <p>
+              <strong>Señores (Entidad Financiera): </strong>
+              {{ financialEntity }}
+            </p>
+
+            <!-- Los demás datos -->
+            <p
+              style="
+                margin: 0;
+                padding: 0;
+                display: inline;
+                margin-right: 300px;
+              "
+            >
+              <strong>Yo, </strong> {{ cliente?.cli_nombres }}
+            </p>
+
+            <p style="margin: 0; padding: 0; display: inline">
+              <strong>con C.I o RUC:</strong>
+            </p>
+
+            <!-- Cuadros dinámicos para la cédula -->
+            <span
+              *ngIf="cliente?.cli_cedula"
+              style="display: inline-flex; gap: 2px; align-items: center"
+            >
+              <ng-container *ngFor="let digit of cliente.cli_cedula.split('')">
+                <span
+                  style="
+                    border: 1px solid #000;
+                    width: 20px;
+                    height: 20px;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 14px;
+                  "
+                >
+                  {{ digit }}
+                </span>
+              </ng-container>
+            </span>
+
+            <p>autorizo expresamente a Puntonet S.A. a debitar de mi :</p>
+            <br /><br />
+
+            <p><strong>Seleccione una Opción:</strong> {{ selectedOption }}</p>
+            <p
+              style="
+                display: inline-flex;
+                gap: 20px;
+                align-items: center;
+                margin-right: 50px;
+              "
+            >
+              <strong>Número de tarjeta:</strong>
+              <span
+                *ngIf="creditCardNumber"
+                style="display: inline-flex; gap: 2px; align-items: center"
+              >
+                <ng-container *ngFor="let digit of creditCardNumber.split('')">
+                  <span
+                    style="
+                      border: 1px solid #000;
+                      width: 20px;
+                      height: 20px;
+                      display: inline-flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ digit }}
+                  </span>
+                </ng-container>
+              </span>
+            </p>
+
+            <p style="display: inline-flex; gap: 20px; align-items: center">
+              <strong>Expira:</strong>
+              <span>Mes:</span>
+              <span
+                *ngIf="creditCardExpiryMonth"
+                style="display: inline-flex; gap: 2px; align-items: center"
+              >
+                <ng-container
+                  *ngFor="let digit of creditCardExpiryMonth.split('')"
+                >
+                  <span
+                    style="
+                      border: 1px solid #000;
+                      width: 20px;
+                      height: 20px;
+                      display: inline-flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ digit }}
+                  </span>
+                </ng-container>
+              </span>
+              <span>Año:</span>
+              <span
+                *ngIf="creditCardExpiryYear"
+                style="display: inline-flex; gap: 2px; align-items: center"
+              >
+                <ng-container
+                  *ngFor="let digit of creditCardExpiryYear.split('')"
+                >
+                  <span
+                    style="
+                      border: 1px solid #000;
+                      width: 20px;
+                      height: 20px;
+                      display: inline-flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ digit }}
+                  </span>
+                </ng-container>
+              </span>
+            </p>
+
+            <p>
+              <strong>Cuenta de Ahorro: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>
+              <span
+                *ngIf="savingsAccountNumber"
+                style="display: inline-flex; gap: 2px; align-items: center"
+              >
+                <ng-container
+                  *ngFor="let digit of savingsAccountNumber.split('')"
+                >
+                  <span
+                    style="
+                      border: 1px solid #000;
+                      width: 20px;
+                      height: 20px;
+                      display: inline-flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ digit }}
+                  </span>
+                </ng-container>
+              </span>
+            </p>
+
+            <p>
+              <strong
+                >Cuenta
+                Corriente:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong
+              >
+              <span
+                *ngIf="creditAccountNumber"
+                style="display: inline-flex; gap: 2px; align-items: center"
+              >
+                <ng-container
+                  *ngFor="let digit of creditAccountNumber.split('')"
+                >
+                  <span
+                    style="
+                      border: 1px solid #000;
+                      width: 20px;
+                      height: 20px;
+                      display: inline-flex;
+                      justify-content: center;
+                      align-items: center;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ digit }}
+                  </span>
+                </ng-container>
+              </span>
+            </p>
+
+            <!-- Texto en una sola línea -->
+            <p style="display: inline">
+              Y, acreditar estas cantidades en la cuenta que indique PUNTONET
+              5.A. (en adelante PUNTONET), para estos fines:
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              EL/los valor/es total/es correspondiente a los gastos contenidos
+              en la factura emitida, incurridos en virtud del Contrato de
+              Servicios que fue suscrito entre la Compañía PUNTONET y el abajo
+              firmante (en adelante SUSCRIPTOR) que será notificado por PUNTONET
+              para que sea acreditado a la cuenta designada por PUNTONET, dentro
+              de los primeros días del ciclo correspondiente; así como el pago
+              de valores correspondientes a los servicios de instalación y
+              cualquier otro servicio adicional que contrate, así como otros
+              gastos administrativos (que apliquen).
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              Como SUSCRIPTOR me comprometo a tener los pagos de mi tarjeta de
+              crédito al día y/o a mantener los fondos suficientes para el
+              débito correspondiente a mi cuenta corriente o de ahorros, y de
+              ser necesario, procedan a sobregirar temporalmente mi cuenta para
+              cumplir el compromiso contraído con PUNTONET, comprometiéndome a
+              cubrir dicho sobregiro bajo las condiciones establecidas de
+              acuerdo a lo pactado con PUNTONET. En el caso de existir alguna
+              inconformidad con la prestación del servicio por parte de la
+              Compañía PUNTONET y el SUSCRIPTOR, se deberá presentar cualquier
+              instrucción en un plazo no mayor a 15 días calendario para la
+              anulación del mismo.
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              Del mismo modo, autorizo expresamente a PUNTONET para que obtenga
+              información de Equifax, incluyendo la Central de Riesgos, con la
+              finalidad de conocer las referencias sobre mi comportamiento
+              credíticio, manejo de mis cuentas corrientes, de ahorro, tarjetas
+              de crédito, etc. y en general del cumplimiento de mis obligaciones
+              y demás activos, pasivos y datos personales. De igual forma,
+              PUNTONET queda expresamente autorizado para que pueda utilizar y
+              comunicar dicha información a autoridades competentes y organismos
+              de control, así como a otras instituciones de conformidad con lo
+              dispuesto en la Ley Orgánica de Protección de Datos Personales y
+              demás normativa aplicable. En caso de incumplimiento en el
+              compromiso del pago mensual, PUNTONET se reserva el derecho de
+              cobrar intereses de acuerdo a lo establecido en la legislación
+              vigente.
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              En caso de que el SUSCRIPTOR se trate de una persona jurídica, las
+              declaraciones efectuadas en este documento se entenderán hechas
+              por su/s representante/s legal/es a nombre de su representado. El
+              valor se hará efectivo cuando le sea remitida la factura,
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              Eximo a la institución bancaria, de cualquier responsabilidad por
+              las cuotas reportadas por PUNTONET.
+            </p>
+
+            <!-- Texto en la siguiente línea, justificado -->
+            <p style="text-align: justify; margin-top: 10px; font-size: 14px">
+              De igual forma autorizo el uso y tratamiento de mis datos
+              personales contenidos en este documento, conforme la Política de
+              Tratamiento de Datos Personales y la Política de Privacidad
+              publicadas en la página web: www.celerity.ec
+            </p>
+          </div>
+        </td>
+      </tr>
+      <!-- Tercera fila con 1 columna -->
+      <tr>
+        <td
+          style="border: 1px solid #000; height: 80px; text-align: center"
+          colspan="3"
+        >
+          <br /><br /><br /><br /><br /><br />
+          <hr style="border: 1px solid #000; width: 50%; margin: 0 auto" />
+          <strong>Firma: {{ cliente?.cli_nombres }}</strong
+          ><br />
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

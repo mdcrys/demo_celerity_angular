@@ -1,0 +1,375 @@
+<div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
+  <!-- Card 1: Título y Búsqueda -->
+  <div class="card card-flush py-4 w-100">
+    <!-- Título Principal -->
+    <div class="card-header text-center">
+      <h2 class="fw-bold">Autorización de Débito Automático</h2>
+    </div>
+    <!-- Subtítulo y Campos de Búsqueda -->
+    <hr />
+    <div class="card-body">
+      <h5 class="fw-semibold mb-4">Buscar por cédula o número de contrato</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="n_document" class="form-label">
+            N° Documento <span class="text-danger">*</span>
+          </label>
+          <input
+            id="n_document"
+            type="text"
+            name="n_document"
+            class="form-control"
+            placeholder="Ingrese el número de documento"
+            [(ngModel)]="cedula"
+            (keyup.enter)="serchClientes()"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="n_contract" class="form-label">
+            N° Contrato <span class="text-danger">*</span>
+          </label>
+          <input
+            id="n_contract"
+            type="text"
+            name="n_contract"
+            class="form-control"
+            placeholder="Ingrese el número de contrato"
+            [(ngModel)]="contrato"
+            (keyup.enter)="serchClientes()"
+          />
+        </div>
+      </div>
+      <!-- Datos del usuario -->
+      <ng-container *ngIf="user$ | async as user">
+        <div class="mb-3">
+          <label for="user-id" class="fw-bold fs-6">ID Usuario:</label>
+          <input
+            type="text"
+            id="user-id"
+            [value]="user.id"
+            class="form-control"
+            readonly
+          />
+        </div>
+      </ng-container>
+
+      <!-- Botón de Buscar -->
+      <div class="row mt-4">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" (click)="serchClientes()">
+            <i class="ki-duotone ki-magnifier fs-2"></i> Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Datos del Cliente -->
+  <div class="card card-flush py-4 w-100">
+    <!-- Subtítulo Datos del Cliente -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Datos del Cliente</h5>
+    </div>
+
+    <div class="card-body">
+      <!-- Fecha (Automática y Bloqueada) y Código de Contrato -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="contract_date" class="form-label">
+            Fecha <span class="text-danger">*</span>
+          </label>
+          <input
+            id="contract_date"
+            type="text"
+            [value]="currentDate"
+            class="form-control"
+            placeholder="Fecha actual"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="contract_code" class="form-label">
+            Código de Contrato <span class="text-danger">*</span>
+          </label>
+          <input
+            id="contract_code"
+            type="text"
+            name="contract_code"
+            class="form-control"
+            placeholder="Ingrese el código de contrato"
+            [value]="cliente?.con_numero_contrato"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+      </div>
+
+      <!-- Señores (Entidad Financiera) -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <label for="financial_entity" class="form-label">
+            Señores (Entidad Financiera) <span class="text-danger">*</span>
+          </label>
+          <input
+            id="financial_entity"
+            type="text"
+            name="financial_entity"
+            class="form-control"
+            placeholder="Ingrese la entidad financiera"
+            [(ngModel)]="financialEntity"
+          />
+        </div>
+      </div>
+
+      <!-- Nombre del Cliente y Número de Cédula -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="client_name" class="form-label">
+            Nombre del Cliente <span class="text-danger">*</span>
+          </label>
+          <input
+            id="client_name"
+            type="text"
+            name="client_name"
+            class="form-control"
+            placeholder="Ingrese el nombre del cliente"
+            [value]="cliente?.cli_nombres"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="client_id" class="form-label">
+            Número de Cédula <span class="text-danger">*</span>
+          </label>
+          <input
+            id="client_id"
+            type="text"
+            name="client_id"
+            class="form-control"
+            placeholder="Ingrese el número de cédula"
+            [value]="cliente?.cli_cedula"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+      </div>
+
+      <!-- Selección de Opción -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="payment_option" class="form-label">
+            Método de Pago <span class="text-danger">*</span>
+          </label>
+          <select
+            id="payment_option"
+            [(ngModel)]="selectedOption"
+            class="form-select"
+            name="payment_option"
+          >
+            <option value="">Seleccione una opción</option>
+            <option value="credit_card">Tarjeta de Crédito Número</option>
+            <option value="savings_account">Cuenta de Ahorros Número</option>
+            <option value="credit_account">Cuenta de Crédito Número</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Campos dinámicos (solo cuando se selecciona la opción adecuada) -->
+      <div class="row">
+        <!-- Tarjeta de Crédito -->
+        <div class="col-md-6" *ngIf="selectedOption === 'credit_card'">
+          <label for="credit_card" class="form-label">
+            Tarjeta de Crédito Número <span class="text-danger">*</span>
+          </label>
+          <input
+            id="credit_card"
+            type="text"
+            name="credit_card"
+            class="form-control"
+            placeholder="Ingrese el número de la tarjeta de crédito"
+            [(ngModel)]="creditCardNumber"
+            [ngClass]="{ 'is-invalid': creditCardNumber && !validCreditCard() }"
+            maxlength="19"
+            (keydown)="onlyNumbers($event)"
+            (input)="validateCreditCardNumber()"
+            [ngClass]="{ 'is-invalid': creditCardNumber && !validCreditCard() }"
+          />
+
+          <!-- Mensaje de error -->
+          <div
+            *ngIf="creditCardNumber && !validCreditCard()"
+            class="invalid-feedback"
+          >
+            Solo puede ingresar números y un máximo de 19 caracteres.
+          </div>
+        </div>
+        <div class="col-md-3" *ngIf="selectedOption === 'credit_card'">
+          <label for="expires_month" class="form-label">
+            Mes de Expiración <span class="text-danger">*</span>
+          </label>
+          <input
+            id="expires_month"
+            type="text"
+            name="expires_month"
+            class="form-control"
+            placeholder="MM"
+            [(ngModel)]="creditCardExpiryMonth"
+            maxlength="2"
+            (keydown)="onlyNumbers($event)"
+            [ngClass]="{
+              'is-invalid': creditCardExpiryMonth && !validExpiryMonth()
+            }"
+            (input)="validateExpiryMonth()"
+          />
+
+          <!-- Mensaje de error -->
+          <div
+            *ngIf="creditCardExpiryMonth && !validExpiryMonth()"
+            class="invalid-feedback"
+          >
+            Solo puede ingresar 2 números entre 01 y 12.
+          </div>
+        </div>
+        <div class="col-md-3" *ngIf="selectedOption === 'credit_card'">
+          <label for="expires_year" class="form-label">
+            Expira Año <span class="text-danger">*</span>
+          </label>
+          <input
+            id="expires_year"
+            type="text"
+            name="expires_year"
+            class="form-control"
+            placeholder="YYYY"
+            [(ngModel)]="creditCardExpiryYear"
+            maxlength="4"
+            (keydown)="onlyNumbers($event)"
+            [ngClass]="{
+              'is-invalid': creditCardExpiryYear && !validExpiryYear()
+            }"
+            (input)="validateExpiryYear()"
+          />
+
+          <!-- Mensaje de error -->
+          <div
+            *ngIf="creditCardExpiryYear && !validExpiryYear()"
+            class="invalid-feedback"
+          >
+            Solo puede ingresar 4 números (año válido).
+          </div>
+        </div>
+
+        <!-- Cuenta de Ahorros -->
+        <div class="col-md-6" *ngIf="selectedOption === 'savings_account'">
+          <label for="savings_account" class="form-label">
+            Cuenta de Ahorros Número <span class="text-danger">*</span>
+          </label>
+          <input
+            id="savings_account"
+            type="text"
+            name="savings_account"
+            class="form-control"
+            placeholder="Ingrese el número de la cuenta de ahorros"
+            [(ngModel)]="savingsAccountNumber"
+          />
+        </div>
+
+        <!-- Cuenta de Crédito -->
+        <div class="col-md-6" *ngIf="selectedOption === 'credit_account'">
+          <label for="credit_account" class="form-label">
+            Cuenta de Crédito Número <span class="text-danger">*</span>
+          </label>
+          <input
+            id="credit_account"
+            type="text"
+            name="credit_account"
+            class="form-control"
+            placeholder="Ingrese el número de la cuenta de crédito"
+            [(ngModel)]="creditAccountNumber"
+          />
+        </div>
+      </div>
+      <br />
+      <button
+        class="btn btn-danger"
+        (click)="exportPDF()"
+        style="font-size: 1.2rem; padding: 12px 25px"
+      >
+        <i class="ki-duotone ki-file-pdf fs-2"></i> Exportar Autorización de
+        Débito a PDF
+      </button>
+
+      <br /><br /><br />
+      <hr />
+      <!-- Título centrado -->
+      <div
+        style="
+          text-align: center;
+          font-weight: bold;
+          font-size: 16px;
+          margin: 10px 0;
+        "
+      >
+        Subir Autorización de Débito
+      </div>
+
+      <!-- Campo para subir el archivo PDF -->
+      <div class="fv-row mb-7">
+        <label class="required fw-bold fs-6 mb-2"
+          >Subir Autorización (PDF):</label
+        >
+        <input
+          type="file"
+          name="contrato_pdf"
+          class="form-control form-control-solid mb-3 mb-lg-0"
+          accept=".pdf"
+          (change)="processFile($event)"
+          required
+        />
+      </div>
+      <hr />
+      <br /><br />
+      <!-- Botón de Registrar -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <!-- Botón Exportar PDF -->
+
+          <div class="text-center pt-4">
+            <button
+              type="button"
+              class="btn btn-success w-100 d-flex justify-content-center align-items-center"
+              (click)="store()"
+            >
+              <!-- Ícono de registrar (puedes cambiarlo por otro ícono que desees) -->
+              <i class="ki-duotone ki-check fs-3 me-2"></i>
+              <!-- Icono de "check" (puedes elegir otro ícono) -->
+              <span class="indicator-label">Registrar</span>
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+                *ngIf="isLoading | async"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Aquí pasamos los datos al componente PdfDebitoComponent -->
+<app-pdf-debito
+  *ngIf="cliente"
+  #pdfDebito
+  [cliente]="cliente"
+  [selectedOption]="selectedOption"
+  [creditCardNumber]="creditCardNumber"
+  [creditCardExpiryMonth]="creditCardExpiryMonth"
+  [creditCardExpiryYear]="creditCardExpiryYear"
+  [savingsAccountNumber]="savingsAccountNumber"
+  [creditAccountNumber]="creditAccountNumber"
+  [currentDate]="currentDate"
+  [financialEntity]="financialEntity"
+>
+</app-pdf-debito>

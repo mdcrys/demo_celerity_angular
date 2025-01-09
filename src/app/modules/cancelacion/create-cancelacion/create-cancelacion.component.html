@@ -1,0 +1,599 @@
+<div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
+  <!-- Card 1: Título y Búsqueda -->
+  <div class="card card-flush py-4 w-100">
+    <!-- Título Principal -->
+    <div class="card-header text-center">
+      <h2 class="fw-bold">Autorización de Débito Automático</h2>
+    </div>
+    <!-- Subtítulo y Campos de Búsqueda -->
+    <hr />
+    <div class="card-body">
+      <h5 class="fw-semibold mb-4">Buscar por cédula o número de contrato</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="n_document" class="form-label">
+            N° Documento <span class="text-danger">*</span>
+          </label>
+          <input
+            id="n_document"
+            type="text"
+            name="n_document"
+            class="form-control"
+            placeholder="Ingrese el número de documento"
+            [(ngModel)]="cedula"
+            (keyup.enter)="serchClientes()"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="n_contract" class="form-label">
+            N° Contrato <span class="text-danger">*</span>
+          </label>
+          <input
+            id="n_contract"
+            type="text"
+            name="n_contract"
+            class="form-control"
+            placeholder="Ingrese el número de contrato"
+            [(ngModel)]="contrato"
+            (keyup.enter)="serchClientes()"
+          />
+        </div>
+      </div>
+      <!-- Datos del usuario -->
+      <ng-container *ngIf="user$ | async as user">
+        <div class="mb-3">
+          <label for="user-id" class="fw-bold fs-6">ID Usuario:</label>
+          <input
+            type="text"
+            id="user-id"
+            [value]="user.id"
+            class="form-control"
+            readonly
+          />
+        </div>
+      </ng-container>
+
+      <!-- Botón de Buscar -->
+      <div class="row mt-4">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" (click)="serchClientes()">
+            <i class="ki-duotone ki-magnifier fs-2"></i> Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 5: Datos del Cliente -->
+  <div class="card card-flush py-4 w-100 mt-4">
+    <div class="card-header">
+      <h5 class="fw-semibold">Datos del Cliente</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <!-- Primera columna -->
+        <div class="col-md-6">
+          <!-- Nombre -->
+          <div class="mb-3">
+            <label for="client_name" class="form-label">
+              Nombre del Cliente <span class="text-danger">*</span>
+            </label>
+            <input
+              id="client_name"
+              type="text"
+              name="client_name"
+              class="form-control"
+              [(ngModel)]="cliente.cli_nombres"
+              placeholder="Ingrese el nombre del cliente"
+              required
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+            />
+          </div>
+
+          <!-- Cédula -->
+          <div class="mb-3">
+            <label for="client_id" class="form-label">
+              Número de Cédula <span class="text-danger">*</span>
+            </label>
+            <input
+              id="client_id"
+              type="text"
+              name="client_id"
+              class="form-control"
+              [(ngModel)]="cliente.cli_cedula"
+              placeholder="Ingrese el número de cédula"
+              required
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+            />
+          </div>
+
+          <!-- RUC -->
+          <div class="mb-3">
+            <label for="client_ruc" class="form-label">
+              RUC de la empresa <span class="text-danger">*</span>
+            </label>
+            <input
+              id="client_ruc"
+              type="text"
+              name="client_ruc"
+              class="form-control"
+              [(ngModel)]="cliente.emp_ruc"
+              placeholder="Ingrese el RUC"
+              required
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+            />
+          </div>
+
+          <!-- Número de Contrato -->
+          <div class="mb-3">
+            <label for="contract_number" class="form-label">
+              Número de Contrato <span class="text-danger">*</span>
+            </label>
+            <input
+              id="numero_contrato"
+              type="text"
+              name="numero_contrato"
+              class="form-control"
+              [value]="cliente?.con_numero_contrato"
+              [(ngModel)]="cliente.numero_contrato"
+              placeholder="Ingrese el número de contrato"
+              required
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+            />
+          </div>
+        </div>
+
+        <!-- Segunda columna -->
+        <div class="col-md-6">
+          <!-- Nombre de la Empresa -->
+          <div class="mb-3">
+            <label for="company_name" class="form-label">
+              Nombre de la Empresa <span class="text-danger">*</span>
+            </label>
+            <input
+              id="company_name"
+              type="text"
+              name="company_name"
+              class="form-control"
+              [(ngModel)]="cliente.emp_nombre"
+              placeholder="Ingrese el nombre de la empresa"
+              required
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+            />
+          </div>
+
+          <!-- Fecha Actual -->
+          <div class="mb-3">
+            <label for="current_date" class="form-label">
+              Fecha Actual <span class="text-danger">*</span>
+            </label>
+            <input
+              id="current_date"
+              type="date"
+              name="current_date"
+              class="form-control"
+              [(ngModel)]="currentDate"
+              readonly
+              style="background-color: #f0f0f0; color: #999"
+              required
+            />
+          </div>
+
+          <!-- Fecha de Terminación de Contrato -->
+          <div class="mb-3">
+            <label for="contract_end_date" class="form-label">
+              Fecha de Terminación de Contrato
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              id="contract_end_date"
+              type="date"
+              name="contract_end_date"
+              class="form-control"
+              [(ngModel)]="cliente.contract_end_date"
+            />
+          </div>
+
+          <!-- Valores Pendientes -->
+          <div class="mb-3">
+            <label for="pending_values" class="form-label">
+              Valores Pendientes <span class="text-danger">*</span>
+            </label>
+            <input
+              id="pending_values"
+              type="text"
+              name="pending_values"
+              class="form-control"
+              [(ngModel)]="cliente.pending_values"
+              placeholder="NO TIENE SALDO PENDIENTES"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 1: Datos del Abono -->
+  <div class="card card-flush py-4 w-100">
+    <!-- Subtítulo Datos del Abono -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Datos del Abono</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <!-- Ejecutivo -->
+        <div class="col-md-6 mb-3">
+          <label for="executive" class="form-label">
+            Ejecutivo <span class="text-danger">*</span>
+          </label>
+          <input
+            id="executive"
+            type="text"
+            name="executive"
+            class="form-control"
+            [(ngModel)]="ejecutivo"
+            placeholder="Ingrese el nombre del ejecutivo"
+            required
+          />
+        </div>
+
+        <!-- Código -->
+        <div class="col-md-6 mb-3">
+          <label for="code" class="form-label">
+            Código <span class="text-danger">*</span>
+          </label>
+          <input
+            id="code"
+            type="text"
+            name="code"
+            class="form-control"
+            [value]="cliente?.con_numero_contrato"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+
+        <!-- Código Abonado -->
+        <div class="col-md-6 mb-3">
+          <label for="subscriber_code" class="form-label">
+            Código Abonado <span class="text-danger">*</span>
+          </label>
+          <input
+            id="subscriber_code"
+            type="text"
+            name="subscriber_code"
+            class="form-control"
+            [value]="cliente?.emp_codigo_abonado"
+            readonly
+            style="background-color: #f0f0f0; color: #999"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Detalle Requerimiento -->
+  <div class="card card-flush py-4 w-100 mt-4">
+    <!-- Subtítulo Detalle Requerimiento -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Detalle Requerimiento</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <!-- Primera columna -->
+        <div class="col-md-6">
+          <!-- Incidencia de Cancelación -->
+          <div class="mb-3">
+            <label for="cancel_incidence" class="form-label">
+              Incidencia de Cancelación <span class="text-danger">*</span>
+            </label>
+            <input
+              id="cancel_incidence"
+              type="text"
+              name="cancel_incidence"
+              class="form-control"
+              placeholder="Ingrese incidencia de cancelación"
+              [(ngModel)]="incidenciaCancelacion"
+              placeholder="Ingrese el nombre del ejecutivo"
+              required
+            />
+          </div>
+
+          <!-- Incidencia Retiro de Equipos -->
+          <div class="mb-3">
+            <label for="equipment_withdrawal_incidence" class="form-label">
+              Incidencia Retiro de Equipos <span class="text-danger">*</span>
+            </label>
+            <input
+              id="equipment_withdrawal_incidence"
+              type="text"
+              name="equipment_withdrawal_incidence"
+              class="form-control"
+              placeholder="Ingrese incidencia retiro de equipos"
+              [(ngModel)]="incidenciaRetiro"
+              placeholder="Ingrese el nombre del ejecutivo"
+              required
+            />
+          </div>
+
+          <!-- Motivo de Cancelación -->
+          <div class="mb-3">
+            <label for="cancel_reason" class="form-label">
+              Motivo de Cancelación <span class="text-danger">*</span>
+            </label>
+            <input
+              id="cancel_reason"
+              type="text"
+              name="cancel_reason"
+              class="form-control"
+              placeholder="Ingrese motivo de cancelación"
+              [(ngModel)]="incidenciaMotivo"
+              placeholder="Ingrese el nombre del ejecutivo"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Segunda columna -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Entrega de Equipos:</label>
+            <div>
+              <input
+                class="form-check-input"
+                type="radio"
+                id="equipment_delivery_yes"
+                name="equipment_delivery"
+                [(ngModel)]="entregaEquipos"
+                value="yes"
+              />
+              <label class="form-check-label me-3" for="equipment_delivery_yes"
+                >Sí</label
+              >
+              <input
+                class="form-check-input"
+                type="radio"
+                id="equipment_delivery_no"
+                name="equipment_delivery"
+                [(ngModel)]="entregaEquipos"
+                value="no"
+              />
+              <label class="form-check-label" for="equipment_delivery_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Entrega de Fuentes -->
+          <div class="mb-3">
+            <label class="form-label">Entrega de Fuentes:</label>
+            <div>
+              <input
+                class="form-check-input"
+                type="radio"
+                id="sources_delivery_yes"
+                name="sources_delivery"
+                [(ngModel)]="entregaFuentes"
+                value="yes"
+              />
+              <label class="form-check-label me-3" for="sources_delivery_yes"
+                >Sí</label
+              >
+              <input
+                class="form-check-input"
+                type="radio"
+                id="sources_delivery_no"
+                name="sources_delivery"
+                [(ngModel)]="entregaFuentes"
+                value="no"
+              />
+              <label class="form-check-label" for="sources_delivery_no"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <!-- Entrega de Base -->
+          <div class="mb-3">
+            <label class="form-label">Entrega de Base:</label>
+            <div>
+              <input
+                class="form-check-input"
+                type="radio"
+                id="base_delivery_yes"
+                name="base_delivery"
+                [(ngModel)]="entregaBase"
+                value="yes"
+              />
+              <label class="form-check-label me-3" for="base_delivery_yes"
+                >Sí</label
+              >
+              <input
+                class="form-check-input"
+                type="radio"
+                id="base_delivery_no"
+                name="base_delivery"
+                [(ngModel)]="entregaBase"
+                value="no"
+              />
+              <label class="form-check-label" for="base_delivery_no">No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4: Informe de los Equipos -->
+  <div class="card card-flush py-4 w-100 mt-4">
+    <!-- Subtítulo Informe de los Equipos -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Informe de los Equipos</h5>
+    </div>
+
+    <div class="card-body">
+      <!-- Equipo -->
+      <div class="mb-3">
+        <label for="equipment" class="form-label">
+          Equipo <span class="text-danger">*</span>
+        </label>
+        <textarea
+          id="equipment"
+          name="equipment"
+          class="form-control"
+          placeholder="Ingrese la descripción del equipo"
+          [(ngModel)]="descripcionEquipo"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Serie -->
+      <div class="mb-3">
+        <label for="series" class="form-label">
+          Serie <span class="text-danger">*</span>
+        </label>
+        <textarea
+          id="series"
+          name="series"
+          class="form-control"
+          placeholder="Ingrese la serie del equipo"
+          [(ngModel)]="serieEquipo"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Estado -->
+      <div class="mb-3">
+        <label for="estados" class="form-label">
+          Estado <span class="text-danger">*</span>
+        </label>
+        <textarea
+          id="estados"
+          name="estados"
+          class="form-control"
+          placeholder="Ingrese el estado del equipo"
+          [(ngModel)]="estadoEquipo"
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4: Informe de los Equipos -->
+  <div class="card card-flush py-4 w-100 mt-4">
+    <!-- Subtítulo Informe de los Equipos -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Observaciones</h5>
+    </div>
+
+    <div class="card-body">
+      <!-- Equipo -->
+      <div class="mb-3">
+        <textarea
+          id="observacion"
+          name="observacion"
+          class="form-control"
+          placeholder="Ingrese una observacion"
+          [(ngModel)]="observaiones"
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Acciones -->
+  <div class="card card-flush py-4 w-100 mt-4">
+    <!-- Subtítulo Acciones -->
+    <div class="card-header">
+      <h5 class="fw-semibold">Acciones</h5>
+    </div>
+
+    <div class="card-body">
+      <!-- Botón Exportar PDF -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <button
+            class="btn btn-danger w-100 d-flex justify-content-center align-items-center"
+            (click)="exportPDF()"
+            style="font-size: 1.2rem; padding: 12px 25px"
+          >
+            <i class="ki-duotone ki-file-pdf fs-2"></i> Exportar Autorización de
+            Débito a PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Campo para subir el archivo PDF -->
+      <div class="fv-row mb-7">
+        <label class="required fw-bold fs-6 mb-2"
+          >Subir Autorización (PDF):</label
+        >
+        <input
+          type="file"
+          name="contrato_pdf"
+          class="form-control form-control-solid mb-3 mb-lg-0"
+          accept=".pdf"
+          (change)="processFile($event)"
+          required
+        />
+      </div>
+
+      <!-- Botón de Registrar -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="text-center pt-4">
+            <button
+              type="button"
+              class="btn btn-success w-100 d-flex justify-content-center align-items-center"
+              (click)="store()"
+            >
+              <i class="ki-duotone ki-check fs-3 me-2"></i>
+              <span class="indicator-label">Registrar</span>
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+                *ngIf="isLoading | async"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Llamada al componente PDF con cada campo individual -->
+<app-pdf-cancelacion
+  *ngIf="cliente"
+  #pdfDebito
+  [clientName]="cliente.cli_nombres"
+  [clientId]="cliente.cli_cedula"
+  [clientRuc]="cliente.emp_ruc"
+  [contractNumber]="cliente.numero_contrato"
+  [companyName]="cliente.emp_nombre"
+  [currentDate]="currentDate"
+  [contractEndDate]="cliente.contract_end_date"
+  [pendingValues]="cliente.pending_values"
+  [executive]="ejecutivo"
+  [code]="cliente?.con_numero_contrato"
+  [subscriberCode]="cliente?.emp_codigo_abonado"
+  [descripcionEquipo]="descripcionEquipo"
+  [serieEquipo]="serieEquipo"
+  [estadoEquipo]="estadoEquipo"
+  [entregaEquipos]="entregaEquipos"
+  [entregaFuentes]="entregaFuentes"
+  [entregaBase]="entregaBase"
+  [incidenciaCancelacion]="incidenciaCancelacion"
+  [incidenciaRetiro]="incidenciaRetiro"
+  [incidenciaMotivo]="incidenciaMotivo"
+  [observaiones]="observaiones"
+></app-pdf-cancelacion>

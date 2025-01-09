@@ -1,0 +1,115 @@
+<!-- Modal Content (Create/Edit Pago) -->
+<div class="modal-header">
+  <h2 class="fw-bolder">Editar Pago</h2>
+  <button class="btn-close" (click)="modal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <form (ngSubmit)="store()">
+    <div class="mb-3">
+      <label for="idPagoContrato" class="form-label">ID del Contrato</label>
+      <input
+        type="text"
+        class="form-control"
+        id="idPagoContrato"
+        [value]="PAGO_SELECTED.pag_id_contrato"
+        readonly
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="montoPago" class="form-label">Monto</label>
+      <input
+        type="text"
+        class="form-control"
+        id="montoPago"
+        [value]="PAGO_SELECTED.pag_monto"
+        readonly
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tipo de Pago</label>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="tipoEfectivo"
+          value="1"
+          [(ngModel)]="tipoPago"
+          name="tipoPago"
+        />
+        <label class="form-check-label" for="tipoEfectivo">Efectivo</label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="tipoTransferencia"
+          value="2"
+          [(ngModel)]="tipoPago"
+          name="tipoPago"
+        />
+        <label class="form-check-label" for="tipoTransferencia"
+          >Transferencia</label
+        >
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="fechaPago" class="form-label">Fecha de Pago</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fechaPago"
+        [(ngModel)]="fecha_pago"
+        name="fecha_pago"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <!-- Label visible que dice "Estado" -->
+      <label for="estado" class="form-label">Estado</label>
+
+      <!-- Span con el texto "Cancelando" debajo y color verde, y un ícono de dinero -->
+      <span style="display: block; color: #28a745; font-size: 16px">
+        <i class="fas fa-money-bill-wave"></i> Cancelando
+      </span>
+
+      <!-- Input hidden que lleva el valor 2 a la base de datos -->
+      <input
+        type="hidden"
+        id="estado"
+        name="state"
+        [(ngModel)]="state"
+        value="2"
+      />
+    </div>
+
+    <div class="fv-row mb-7">
+      <label class="required fw-bold fs-6 mb-2">Subir archivo PDF:</label>
+      <input
+        type="file"
+        class="form-control form-control-solid"
+        id="pdfFile"
+        name="pdfFile"
+        (change)="processFile($event)"
+        accept="application/pdf"
+      />
+    </div>
+
+    <button
+      type="button"
+      (click)="store()"
+      class="btn btn-primary"
+      data-kt-users-modal-action="submit"
+    >
+      <span class="indicator-label">Actualizar</span>
+      <span
+        class="spinner-border spinner-border-sm align-middle ms-2"
+        *ngIf="isLoading | async"
+      ></span>
+    </button>
+  </form>
+</div>

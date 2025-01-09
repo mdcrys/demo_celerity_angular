@@ -1,0 +1,461 @@
+<div id="pdf-content">
+  <!-- Tabla con 21 filas y 10 columnas -->
+  <table
+    style="
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2px;
+      border: 1px solid black;
+    "
+  >
+    <!-- Fila de encabezado, si es necesario -->
+    <tr>
+      <th colspan="3" style="border: 1px solid black; text-align: center">
+        <img
+          src="./assets/media/stock/900x600/logo.png"
+          alt="Imagen"
+          style="
+            width: 75%; /* Ajusta el ancho de la imagen */
+            height: 100px;
+            display: inline-block; /* Hace que la imagen no ocupe todo el ancho */
+          "
+        />
+      </th>
+      <th colspan="5" style="border: 1px solid black; text-align: center">
+        Cancelación Servicio
+      </th>
+      <th colspan="2" style="border: 1px solid black; text-align: center"></th>
+    </tr>
+
+    <!-- Fila 1 a Fila 21 -->
+    <!-- Repite esta estructura para todas las filas -->
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Ciudad:
+      </th>
+
+      <th colspan="8" style="border: 1px solid black; text-align: left">
+        <strong>Quito</strong>
+      </th>
+    </tr>
+
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Fecha de Solicitud:
+      </th>
+
+      <th colspan="8" style="border: 1px solid black; text-align: left">
+        {{ currentDate }}
+      </th>
+    </tr>
+
+    <!-- Continúa hasta la fila 21 -->
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        DATOS DEL ABONADO
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Ejecutito/a:
+      </th>
+      <th colspan="3" style="border: 1px solid black; text-align: left">
+        Ejecutivo de apoyo
+      </th>
+      <th
+        colspan="3"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Código Contrato Plan:
+      </th>
+      <th colspan="2" style="border: 1px solid black; text-align: center">
+        {{ code }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Código del Abonado:
+      </th>
+
+      <th colspan="8" style="border: 1px solid black; text-align: lefft">
+        {{ subscriberCode }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        DETALLE DE REQUERIMIENTO
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Incidente de Cancelación:
+      </th>
+      <th colspan="3" style="border: 1px solid black; text-align: center">
+        {{ incidenciaCancelacion }}
+      </th>
+      <th
+        colspan="3"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Entrega de equipos:
+      </th>
+      <th colspan="2" style="border: 1px solid black; text-align: center">
+        {{
+          entregaEquipos === "yes" ? "Sí" : entregaEquipos === "no" ? "No" : ""
+        }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Incidente de Retiro de Equipo:
+      </th>
+      <th colspan="3" style="border: 1px solid black; text-align: center">
+        {{ incidenciaRetiro }}
+      </th>
+      <th
+        colspan="3"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Entrega de fuente:
+      </th>
+      <th colspan="2" style="border: 1px solid black; text-align: center">
+        {{
+          entregaFuentes === "yes" ? "Sí" : entregaFuentes === "no" ? "No" : ""
+        }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Motivo de Cancelación:
+      </th>
+      <th colspan="3" style="border: 1px solid black; text-align: center">
+        {{ incidenciaMotivo }}
+      </th>
+      <th
+        colspan="3"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          height: 30px;
+          background-color: #add8e6;
+          height: 40px;
+        "
+      >
+        Entrega de Base:
+      </th>
+      <th colspan="2" style="border: 1px solid black; text-align: center">
+        {{ entregaBase === "yes" ? "Sí" : entregaBase === "no" ? "No" : "" }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        INFORMACIÓN DE LOS EQUIPOS
+      </th>
+    </tr>
+
+    <tr>
+      <th
+        colspan="2"
+        style="border: 1px solid black; text-align: center; height: 100px"
+      >
+        EQUIPO
+      </th>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          width: 100px; /* Define un ancho fijo */
+          word-wrap: break-word; /* Permite el salto de línea automático */
+          word-break: break-word; /* Asegura que las palabras largas también se corten */
+        "
+      >
+        {{ descripcionEquipo }}
+      </th>
+      <th colspan="1" style="border: 1px solid black; text-align: center">
+        SERIE
+      </th>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          width: 100px; /* Define un ancho fijo */
+          word-wrap: break-word; /* Permite el salto de línea automático */
+          word-break: break-word; /* Asegura que las palabras largas también se corten */
+        "
+      >
+        {{ serieEquipo }}
+      </th>
+      <th colspan="1" style="border: 1px solid black; text-align: center">
+        ESTADO
+      </th>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          width: 100px; /* Define un ancho fijo */
+          word-wrap: break-word; /* Permite el salto de línea automático */
+          word-break: break-word; /* Asegura que las palabras largas también se corten */
+        "
+      >
+        {{ estadoEquipo }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        SOLICITUD EXPRESA DE CANCELACION
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          height: 40px;
+          text-align: justify;
+        "
+      >
+        Yo,__ {{ clientName }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp; por mis propios y personales derechos, y/o los
+        que represento de la empresa,__
+        {{ companyName }} &nbsp;&nbsp;&nbsp;&nbsp;, con documento de identidad
+        (cédula/Pasaporte) No.__ {{ clientId }} &nbsp;&nbsp;&nbsp; y/o RUC
+        No.__{{ clientId }} &nbsp;&nbsp;&nbsp; en mi calidad de Abonado, por
+        medio del presente instrumento solicito la cancelación del servicio
+        contratado con Puntonet S.A. con fecha:__
+        {{ contractEndDate }} .&nbsp;&nbsp; ; y por ende la terminación del
+        contrato No.__{{ code }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        VALORES POR DESCUENTOS, PROMOCIONES Y/O BENEFICIOS
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          height: 40px;
+          text-align: justify;
+        "
+      >
+        Mantengo valores pendientes de pago por descuentos, promociones y/o
+        beneficios: No__&nbsp;&nbsp;&nbsp;&nbsp; Si__&nbsp;&nbsp;&nbsp;&nbsp;
+        Reconozco y acepto expresamente que debo y pagaré a Puntonet S.A. los
+        valores pendientes por descuentos, promociones y/o| beneficios de
+        permanencia mínima , de acuerdo a las condiciones y especificaciones
+        detalladas a continuación:
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="7"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          height: 30px;
+          background-color: #add8e6;
+        "
+      >
+        Condiciones
+      </th>
+      <th
+        colspan="2"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          height: 60px;
+          background-color: #add8e6;
+        "
+      >
+        Costo Incluido Impuestos
+      </th>
+      <th colspan="1" style="border: 1px solid black"></th>
+    </tr>
+    <tr>
+      <th
+        colspan="7"
+        style="
+          border: 1px solid black;
+          text-align: center;
+          height: 30px;
+          text-align: justify;
+        "
+      >
+        * Valor proporcional a la fecha de cancelación del servicio por
+        descuentos, promociones y/o beneficios otorgados, aceptados expresa y
+        previamente por el Abonado.
+      </th>
+      <th
+        colspan="2"
+        style="border: 1px solid black; text-align: center; height: 60px"
+      ></th>
+      <td colspan="1" style="border: 1px solid black"></td>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          vertical-align: top;
+          word-wrap: break-word; /* Ajusta las palabras largas */
+          word-break: break-word; /* Rompe palabras largas si es necesario */
+          white-space: pre-wrap; /* Asegura que los saltos de línea se respeten */
+          overflow-wrap: break-word; /* Asegura que el texto no desborde */
+          max-width: 200px; /* Ajusta el ancho máximo de la celda (aumentado para más espacio) */
+          height: auto; /* Permite que la celda se ajuste al contenido */
+        "
+      >
+        Observaciones:__ {{ observaiones }}
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="border: 1px solid black; text-align: center; height: 40px"
+      >
+        FIRMA DEL ABONADO
+      </th>
+    </tr>
+    <tr>
+      <th
+        colspan="10"
+        style="
+          border: 1px solid black;
+          text-align: left;
+          vertical-align: top;
+          height: 60px;
+        "
+      >
+        Atentamente,
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <span
+          style="
+            display: inline-block;
+            border-top: 1px solid black;
+            padding-top: 2px;
+          "
+        >
+          CI/Pasaporte/RUC:{{ clientId }}
+        </span>
+      </th>
+    </tr>
+
+    <tr>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+      <td style="">..................</td>
+    </tr>
+  </table>
+</div>

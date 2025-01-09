@@ -1,0 +1,105 @@
+<!-- Modal content -->
+<div class="modal-content">
+  <!-- Modal header -->
+  <div class="modal-header" id="kt_modal_add_user_header">
+    <h2 class="fw-bolder">Pagos</h2>
+    <div
+      class="btn btn-icon btn-sm btn-active-icon-primary"
+      data-kt-users-modal-action="close"
+      (click)="modal.dismiss()"
+    >
+      <span class="svg-icon svg-icon-1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <rect
+            opacity="0.5"
+            x="6"
+            y="17.3137"
+            width="16"
+            height="2"
+            rx="1"
+            transform="rotate(-45 6 17.3137)"
+            fill="currentColor"
+          />
+          <rect
+            x="7.41422"
+            y="6"
+            width="16"
+            height="2"
+            rx="1"
+            transform="rotate(45 7.41422 6)"
+            fill="currentColor"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body scroll-y mx-5 my-7">
+    <!-- Table with payments -->
+    <table
+      class="table align-middle table-row-dashed fs-6 gy-5"
+      id="kt_table_pagos"
+    >
+      <thead>
+        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+          <th class="w-25px pe-2">#</th>
+          <th class="min-w-100px">Contrato</th>
+          <th class="min-w-100px">Fecha Vencimiento</th>
+          <th class="min-w-100px">Monto</th>
+          <th class="min-w-100px">Estado</th>
+          <th class="min-w-100px">Acciones</th>
+          <!-- Nueva columna para las acciones -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pago of pagos">
+          <td>{{ pago.pag_id }}</td>
+          <td>{{ pago.pag_id_contrato }}</td>
+          <td>{{ pago.pag_fecha_vencimiento | date : "dd/MM/yyyy" }}</td>
+          <td>{{ pago.pag_monto | currency : "USD" }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge-light-warning': pago.status === 1,
+                'badge-light-success': pago.status === 2,
+                'badge-light-danger': pago.status === 3
+              }"
+            >
+              {{
+                pago.status === 1
+                  ? "Por Pagar"
+                  : pago.status === 2
+                  ? "Pagado"
+                  : "En Mora"
+              }}
+            </span>
+          </td>
+
+          <td>
+            <!-- Botón 'Pagar' por cada pago -->
+            <button
+              *ngIf="pago.status === 1 || pago.status === 3"
+              class="btn"
+              [ngClass]="{
+                'btn-success': pago.status === 1 || pago.status === 3,
+                'btn-secondary': pago.status === 2
+              }"
+              [attr.disabled]="pago.status === 2 ? true : null"
+              (click)="editPago(pago)"
+            >
+              Pagar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

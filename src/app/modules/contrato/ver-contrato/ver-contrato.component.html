@@ -1,0 +1,175 @@
+<!-- Modal header -->
+<div class="modal-header" id="kt_modal_add_user_header">
+  <h2 class="fw-bolder">Detalles del contrato: {{ contratoId }}</h2>
+  <div
+    class="btn btn-icon btn-sm btn-active-icon-primary"
+    data-kt-users-modal-action="close"
+    (click)="modal.dismiss()"
+  >
+    <span class="svg-icon svg-icon-1">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <rect
+          opacity="0.5"
+          x="6"
+          y="17.3137"
+          width="16"
+          height="2"
+          rx="1"
+          transform="rotate(-45 6 17.3137)"
+          fill="currentColor"
+        />
+        <rect
+          x="7.41422"
+          y="6"
+          width="16"
+          height="2"
+          rx="1"
+          transform="rotate(45 7.41422 6)"
+          fill="currentColor"
+        />
+      </svg>
+    </span>
+  </div>
+</div>
+
+<!-- Modal Body -->
+<div class="modal-body scroll-y mx-5 my-7">
+  <div class="form-group">
+    <label class="fw-bold">Número de Contrato:</label>
+    <p class="fs-6">{{ numero_contrato }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Tipo de Contrato:</label>
+    <p class="fs-6">{{ tipo_contrato }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">ID Cliente:</label>
+    <p class="fs-6">{{ cliente_id }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">ID Usuario:</label>
+    <p class="fs-6">{{ usuario_id }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Sucursal ID:</label>
+    <p class="fs-6">{{ sucursale_id }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Fecha de Inicio:</label>
+    <p class="fs-6">{{ fecha_inicio }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Estado:</label>
+    <p class="fs-6">{{ state === "1" ? "Activo" : "Inactivo" }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Dirección:</label>
+    <p class="fs-6">{{ direccion }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Ciudad:</label>
+    <p class="fs-6">{{ ciudad }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Parroquia:</label>
+    <p class="fs-6">{{ parroquia }}</p>
+  </div>
+
+  <div class="modal-body">
+    <h3>Datos del Usuario</h3>
+    <p><strong>Nombre:</strong> {{ usuarioNombre }}</p>
+    <p><strong>Apellido:</strong> {{ usuarioApellido }}</p>
+    <p><strong>Email:</strong> {{ usuarioEmail }}</p>
+    <p><strong>Teléfono:</strong> {{ usuarioTelefono }}</p>
+
+    <h3>Datos del Contrato</h3>
+    <p><strong>Cliente:</strong> {{ CLIENTE_SELECTED.cliente }}</p>
+    <!-- Otros datos del contrato -->
+  </div>
+
+  <h3>Datos del contrato</h3>
+  <p><strong>Cliente:</strong> {{ CLIENTE_SELECTED.cliente }}</p>
+  <!-- Datos del Cliente -->
+  <div class="form-group">
+    <label class="fw-bold">Nombre del Cliente:</label>
+    <p class="fs-6">{{ clienteNombre }}</p>
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">Cédula del Cliente:</label>
+    <p class="fs-6">{{ clienteCedula }}</p>
+  </div>
+
+  <div class="form-group" *ngIf="servicioDatos && servicioDatos.length > 0">
+    <label class="fw-bold">Servicios Asociados:</label>
+    <ul>
+      <li *ngFor="let servicio of servicioDatos">
+        <p><strong>Nombre del servicio:</strong> {{ servicio?.ser_nombre }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group" *ngIf="pagosDatos && pagosDatos.length > 0">
+    <label class="fw-bold">Pagos Realizados:</label>
+    <ul>
+      <li *ngFor="let pago of pagosDatos">
+        <p>
+          <strong>Fecha de Pago:</strong>
+          {{ pago.pag_fecha_pago || "No disponible" }}
+        </p>
+        <p><strong>Monto:</strong> {{ pago.pag_monto | currency }}</p>
+        <p>
+          <strong>Fecha de Vencimiento:</strong>
+          {{ pago.pag_fecha_vencimiento }}
+        </p>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noPagos>
+    <div class="alert alert-info">
+      No se han encontrado pagos para este contrato.
+    </div>
+  </ng-template>
+
+  <div
+    class="form-group"
+    *ngIf="trasladosDatos && trasladosDatos.length > 0; else noTraslados"
+  >
+    <label class="fw-bold">Traslados Realizados:</label>
+    <ul>
+      <li *ngFor="let traslado of trasladosDatos">
+        <p>
+          <strong>Nueva Dirección para el traslado:</strong>
+          {{ traslado.hit_direccion_traspaso || "No disponible" }}
+        </p>
+        <p><strong>Monto:</strong> {{ traslado.hit_costo | currency }}</p>
+        <p>
+          <strong>Fecha del Traslado:</strong>
+          {{ traslado.hit_fecha_raspaso }}
+        </p>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noTraslados>
+    <div class="alert alert-info">
+      No se han encontrado traslados para este contrato.
+    </div>
+  </ng-template>
+</div>

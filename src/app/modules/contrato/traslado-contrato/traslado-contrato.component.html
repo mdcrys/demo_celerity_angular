@@ -1,0 +1,148 @@
+<!--begin::Modal content CREATE-->
+<div class="modal-content">
+  <!--begin::Modal header-->
+  <div class="modal-header" id="kt_modal_add_user_header">
+    <!--begin::Modal title-->
+    <h2 class="fw-bolder">Traspaso de Contrato</h2>
+    <!--end::Modal title-->
+
+    <!--begin::Close-->
+    <div
+      class="btn btn-icon btn-sm btn-active-icon-primary"
+      data-kt-users-modal-action="close"
+      (click)="modal.dismiss()"
+    >
+      <span class="svg-icon svg-icon-1">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <rect
+            opacity="0.5"
+            x="6"
+            y="17.3137"
+            width="16"
+            height="2"
+            rx="1"
+            transform="rotate(-45 6 17.3137)"
+            fill="currentColor"
+          />
+          <rect
+            x="7.41422"
+            y="6"
+            width="16"
+            height="2"
+            rx="1"
+            transform="rotate(45 7.41422 6)"
+            fill="currentColor"
+          />
+        </svg>
+      </span>
+    </div>
+    <!--end::Close-->
+  </div>
+  <!--end::Modal header-->
+
+  <!--begin::Modal body-->
+  <div class="modal-body scroll-y mx-5 my-7">
+    <!--begin::Form-->
+    <form id="kt_modal_transfer_form" class="form" action="#">
+      <!--begin::Scroll-->
+      <div class="d-flex flex-column scroll-y me-n7 pe-7">
+        <!--begin::Input group - ID de Contrato-->
+        <div class="fv-row mb-7">
+          <label class="required fw-bold fs-6 mb-2">ID de Contrato:</label>
+          <input
+            type="text"
+            name="contractId"
+            class="form-control form-control-solid mb-3 mb-lg-0"
+            placeholder="Ingrese el ID del contrato"
+            [(ngModel)]="contratoId"
+            readonly
+          />
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group - Dirección de Traslado-->
+        <div class="fv-row mb-7">
+          <label class="required fw-bold fs-6 mb-2"
+            >Dirección de Traslado:</label
+          >
+          <textarea
+            class="form-control form-control-solid"
+            rows="3"
+            name="newAddress"
+            placeholder="Ingrese la nueva dirección"
+            [(ngModel)]="direccion_traslado"
+          ></textarea>
+        </div>
+
+        <!--begin::Input group - Fecha de Traslado-->
+        <div class="fv-row mb-7">
+          <label class="required fw-bold fs-6 mb-2">Fecha de Traslado:</label>
+          <input
+            type="date"
+            name="transferDate"
+            class="form-control form-control-solid"
+            [(ngModel)]="fecha_traslado"
+          />
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group - Costo-->
+        <div class="fv-row mb-7">
+          <label class="fw-bold fs-6 mb-2">Costo de Traslado:</label>
+          <p class="text-primary fw-bold fs-1">40 dólares</p>
+          <input
+            type="hidden"
+            name="transferCost"
+            [(ngModel)]="costoTraslado"
+            [value]="40"
+          />
+        </div>
+        <!--end::Input group-->
+
+        <!-- Campo para subir el archivo PDF -->
+        <div class="fv-row mb-7">
+          <label class="required fw-bold fs-6 mb-2"
+            >Subir Traslado (PDF):</label
+          >
+          <input
+            type="file"
+            name="traslado_pdf"
+            class="form-control form-control-solid mb-3 mb-lg-0"
+            accept=".pdf"
+            (change)="processFile($event)"
+            required
+          />
+        </div>
+      </div>
+      <!--end::Scroll-->
+
+      <!--begin::Actions-->
+      <div class="text-center pt-15">
+        <button
+          type="reset"
+          class="btn btn-light me-3"
+          (click)="modal.dismiss()"
+        >
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="store()">
+          <span class="indicator-label">Guardar Traslado</span>
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+            *ngIf="isLoading | async"
+          ></span>
+        </button>
+      </div>
+      <!--end::Actions-->
+    </form>
+    <!--end::Form-->
+  </div>
+  <!--end::Modal body-->
+</div>
+<!--end::Modal content CREATE-->
