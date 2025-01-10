@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import html2pdf from 'html2pdf.js'; // Usamos html2pdf.js directamente
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-pdf-cancelacion',
@@ -32,34 +34,30 @@ export class PdfCancelacionComponent {
 
   exportToPDF(): void {
     const element = document.getElementById('pdf-content');
-    if (element) {
-      // Ajustes para evitar desbordamientos
-      element.style.overflow = 'hidden'; // Evita que el contenido se desborde
-      element.style.maxWidth = '100%'; // Asegura que el contenido no se expanda más allá de su contenedor
-      element.style.wordWrap = 'break-word'; // Para romper palabras largas
 
-      // Ajustar las celdas de la tabla
-      const cells = Array.from(
-        element.getElementsByTagName('th')
-      ) as HTMLTableCellElement[];
-      cells.forEach((cell) => {
-        cell.style.whiteSpace = 'normal';
-        cell.style.wordWrap = 'break-word';
-        cell.style.overflowWrap = 'break-word';
-        cell.style.maxWidth = '50px';
+    if (element) {
+      // Inicializar jsPDF
+      const doc = new jsPDF({
+        unit: 'mm',
+        format: 'a4', // Formato de página A4
+        orientation: 'portrait', // Orientación de la página
       });
 
-      // Configuración de html2pdf
-      const opt = {
-        margin: 1,
-        filename: '_autorizacion_debito.pdf', // Nombre del archivo PDF
-        image: { type: 'png', quality: 0.98 },
-        html2canvas: { scale: 2, logging: true, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      };
+      // Establecer márgenes para el PDF
+      const margin = 10;
 
-      // Generar el PDF directamente desde el contenido HTML
-      html2pdf().from(element).set(opt).save();
+      // Generar el PDF desde el contenido HTML
+      doc.html(element, {
+        margin: margin,
+        callback: function (doc) {
+          // Guardar el PDF con el nombre que elijas
+          doc.save('_autorizacion_debito.pdf');
+        },
+        x: margin,
+        y: margin,
+        width: 170, // Ancho del contenido
+        windowWidth: 800, // Establecer el ancho de la ventana de visualización
+      });
     } else {
       console.error('No se encontró el elemento HTML con el ID especificado.');
     }

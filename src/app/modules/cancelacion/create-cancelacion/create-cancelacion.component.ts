@@ -8,8 +8,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../auth';
-import { PdfDebitoComponent } from '../../debito/pdf-debito/pdf-debito.component';
-import { DebitoService } from '../../debito/service/debito.service';
 import { CancelacionService } from '../service/cancelacion.service';
 import { PdfCancelacionComponent } from '../pdf-cancelacion/pdf-cancelacion.component';
 
@@ -21,7 +19,7 @@ import { PdfCancelacionComponent } from '../pdf-cancelacion/pdf-cancelacion.comp
 export class CreateCancelacionComponent {
   @Output() DebitoC: EventEmitter<any> = new EventEmitter();
   @ViewChild(PdfCancelacionComponent)
-  pdfDebitoComponent: PdfCancelacionComponent;
+  pdfCancaelacionComponent: PdfCancelacionComponent;
   cliente: any = {
     con_numero_contrato: '', // Número de contrato vacío
     cli_cedula: '', // Cédula vacía
@@ -146,15 +144,36 @@ export class CreateCancelacionComponent {
   }
 
   // Llama a exportToPDF del componente hijo
-  exportPDF() {
-    if (this.pdfDebitoComponent) {
-      this.pdfDebitoComponent.exportToPDF();
+  /*exportPDF() {
+    if (this.pdfCancaelacionComponent) {
+      this.pdfCancaelacionComponent.exportToPDF();
     }
+  }*/
+
+  validateForm(): boolean {
+    // Validación del Número de Cédula
+    if (!this.cliente?.cli_cedula) {
+      this.toast.warning(
+        'Debe consultar primero el cliente, el número de cédula está vacío.',
+        'Advertencia'
+      );
+      return false; // Detener la ejecución y retornar false si falla la validación
+    }
+
+    // Si pasa todas las validaciones, retornar true
+    return true; // El formulario es válido si llega hasta aquí
   }
 
-  /*
   // Esta es la función que se llama cuando se da clic en el botón "Exportar a PDF"
   exportPDF() {
+    // Llamamos a la función de validación antes de proceder con la exportación
+    const isFormValid = this.validateForm(); // Esto activa las validaciones y obtiene el resultado
+
+    if (!isFormValid) {
+      // Si la validación falla, no hacemos nada y terminamos la función
+      return; // Detenemos el proceso de exportación
+    }
+
     // Si la validación pasa, mostramos el mensaje de "Generando PDF..."
     this.toast.info('Generando PDF...', 'Por favor espera', {
       timeOut: 0, // Mantener el mensaje visible indefinidamente
@@ -176,22 +195,20 @@ export class CreateCancelacionComponent {
 
   // Función para generar el PDF
   generatePDF() {
-    if (this.pdfDebitoComponent) {
-      this.pdfDebitoComponent
-        .exportToPDF()
+    if (this.pdfCancaelacionComponent) {
+      Promise.resolve(this.pdfCancaelacionComponent.exportToPDF())
         .then(() => {
           this.toast.clear(); // Limpiar el mensaje de "Generando PDF..."
           this.showPdfComponent = false; // Ocultar el componente PDF
           this.toast.success('PDF generado con éxito', 'Éxito'); // Mostrar mensaje de éxito
         })
-        .catch((error) => {
+        .catch((error: any) => {
           this.toast.clear();
           console.error('Error al generar el PDF:', error);
           this.toast.error('Error al generar el PDF', 'Error'); // Mostrar mensaje de error
         });
     }
   }
-    */
 
   // Método para procesar el archivo PDF
   processFile($event: any): void {
